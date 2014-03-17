@@ -1,0 +1,28 @@
+{
+  "name": "basecontroller",
+  "version": "1.0.0",
+  "description": "Core module for basecontroller.",
+  "repository": "git://github.com/AgoraTech/node-basecontroller.git",
+  "homepage": "https://github.com/AgoraTech/node-basecontroller",
+  "bin": {
+    "node-init": "./bin/node-init.js",
+    "node-service": "./bin/node-service.js"
+  },
+  "dependencies": {
+    "basecontroller-core": "1.0.0",
+    "basecontroller-logger": "0.1.0",
+    "flatconfig": "0.4.*",
+    "daemonize2": "0.4.*"
+  },
+  "keywords": [
+    "deamon",
+    "log",
+    "upstart",
+    "server",
+    "hosting"
+  ],
+  "author": {
+    "name": "Agora SA"
+  },
+  "license": "BSD"
+}

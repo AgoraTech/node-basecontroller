@@ -15,83 +15,92 @@ A "could be a bit simplier" app
 
 file: app/cfg.js
 
-    module.exports = {
-        "appname": "ABC",                   // Application name
-        "ctrl": "../lib/app-controller",    // Main controller location
-        "logfile": __dirname + "/logs/my-controller2.log",
-                                            // Log file location
-        "loglevel": 9,                      // Log level
-        "init": true,                       // Should the controller be initialized? (calls init)
-        "debug": {
-             "port": 0,                     // This will cause BaseController to start application with nodejs debug if port > 0
-             "brk": false                   // This will cause to pass --debug-brk to controller
-        },
-        "services": {                       // Turn on services you like
-            "http": {                       // Will require ./services/http, this._basename + '/services/http' or basecontroller-svc-http
-                "port": 31337               // Provide port
-            }
-        },
-        "myhandler": {                      // The above configuration is more or less required.
-            "response": {                   // You can specify own config
-                "ver": "1.0.0",
-                "url": "http://localhost:8080/"
-            }
+```js
+module.exports = {
+    "appname": "ABC",                   // Application name
+    "ctrl": "../lib/app-controller",    // Main controller location
+    "logfile": __dirname + "/logs/my-controller2.log",
+                                        // Log file location
+    "loglevel": 9,                      // Log level
+    "init": true,                       // Should the controller be initialized? (calls init)
+    "debug": {
+         "port": 0,                     // This will cause BaseController to start application with nodejs debug if port > 0
+         "brk": false                   // This will cause to pass --debug-brk to controller
+    },
+    "services": {                       // Turn on services you like
+        "http": {                       // Will require ./services/http, this._basename + '/services/http' or basecontroller-svc-http
+            "port": 31337               // Provide port
+        }
+    },
+    "myhandler": {                      // The above configuration is more or less required.
+        "response": {                   // You can specify own config
+            "ver": "1.0.0",
+            "url": "http://localhost:8080/"
         }
     }
+}
+```
 
 file: app/lib/my.js
 
-    var util = require('util'),
-        BaseController = require('basecontroller-core');
-    
-    var MyController = function MyController() {
-        BaseController.call(this);
-    };
+```js
+var util = require('util'),
+    BaseController = require('basecontroller-core');
 
-    util.inherits(MyController, BaseController);
+var MyController = function MyController() {
+    BaseController.call(this);
+};
 
-    MyController.initBeforeHandlers = function() {
-        require('./myhandler').call(this, this.cfg.myhandler);
-    };
+util.inherits(MyController, BaseController);
+
+MyController.initBeforeHandlers = function() {
+    require('./myhandler').call(this, this.cfg.myhandler);
+};
+```    
     
 file: app/lib/myhandler.js
 
-    module.exports = function(cfg) {
-        // we did call this using MyController instance as context
-        this.addHandler('http', 'redir', function(req, data, callback){
-            callback(cfg.response);
-            return true;
-        });
-    };
+```js
+module.exports = function(cfg) {
+    // we did call this using MyController instance as context
+    this.addHandler('http', 'redir', function(req, data, callback){
+        callback(cfg.response);
+        return true;
+    });
+};
+```
 
 file: ~/.node-service.d/my.conf
-    
-    name = MyController
-    root = false
 
-    [daemon]
-    name = my
-    pidfile = ${HOME}/run/my.pid
-    user = false
-    group = false
+```    
+name = MyController
+root = false
 
-    [app]
-    config = /path/to/my/app/cfg.json
-    ipcsock = ${HOME}/run/my.sock
+[daemon]
+name = my
+pidfile = ${HOME}/run/my.pid
+user = false
+group = false
 
+[app]
+config = /path/to/my/app/cfg.json
+ipcsock = ${HOME}/run/my.sock
+```
 
 
 And lets run this and test it:
     
-    # create directories first
-    mkdir ${HOME}/run
-    mkdir ${HOME}/svclog
-    mkdir /path/to/my/app/logs
+```bash
+# create directories first
+mkdir ${HOME}/run
+mkdir ${HOME}/svclog
+mkdir /path/to/my/app/logs
 
-    #exec
-    node-service my start
-    curl -q 'http://localhost:31337/redir/'
-    node-service my stop
+#exec
+node-service my start
+curl -q 'http://localhost:31337/redir/'
+node-service my stop
+```
 
 What does it do
 -----------------
@@ -118,7 +127,9 @@ Installation
 
 Couldn't be easier than this:
 
-    npm install -g basecontroller
+```bash
+npm install -g basecontroller
+```
 
 Developing your own Controller
 --------------------------------
@@ -130,7 +141,9 @@ Development Usage
 
 You can run a basecontroller application from command line - this allows you to debug 
 
-    node-init --config=your/config/location.js --flavour=relative_to_config/inifile.ini --no-logfile --loglevel=9 --no-your-app-something-you-dont-need --your-app-something-you-need=is_something
+```bash
+node-init --config=your/config/location.js --flavour=relative_to_config/inifile.ini --no-logfile --loglevel=9 --no-your-app-something-you-dont-need --your-app-something-you-need=is_something
+```
 
 Standard usage:
 * --config=**file** tell where your application default configuration is
@@ -144,12 +157,16 @@ Production Usage
 ------------------
 
 Using flavours and .node-service.d files you can simply run your software:
-    
-    node-service my start
+
+```
+node-service my start
+```
 
 And stop it:
     
-    node-service my stop
+```bash
+node-service my stop
+```
 
 INI flavour files
 -------------------

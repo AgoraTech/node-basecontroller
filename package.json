@@ -1,6 +1,6 @@
 {
   "name": "basecontroller",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Core module for basecontroller.",
   "repository": "git://github.com/AgoraTech/node-basecontroller.git",
   "homepage": "https://github.com/AgoraTech/node-basecontroller",
@@ -11,6 +11,7 @@
   "dependencies": {
     "basecontroller-core": "1.0.0",
     "basecontroller-logger": "0.1.0",
+    "basecontroller-libs": "0.1.0",
     "flatconfig": "0.4.*",
     "daemonize2": "0.4.*"
   },
